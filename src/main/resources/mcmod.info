@@ -1,0 +1,16 @@
+[
+{
+  "modid": "FLORA",
+  "name": "Fluids + Liquids On Ridiculous Armor",
+  "description": "Adds armor that can be customized with TE liquids.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Pixlepix"],
+  "credits": "Textures done by Blorph",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["ThermalFoundation"]
+}
+]
