@@ -8,9 +8,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.FluidTank;
+
+import java.util.ArrayList;
 
 public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 
@@ -66,6 +72,26 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
+	}
+
+	public static final String NBT_FLUID_TAG_LIST="FLORA Armor Fluid Tag List";
+
+	public ArrayList<FluidTank> getFluidTanks(ItemStack item){
+		NBTTagCompound nbt = item.stackTagCompound;
+		ArrayList<FluidTank> r=new ArrayList<FluidTank>();
+
+		if(nbt==null){
+			return r;
+		}
+		NBTTagList tagList=nbt.getTagList("",Constants.NBT.TAG_COMPOUND);
+		for(int i=0;i<tagList.tagCount();i++){
+			NBTTagCompound fluid=tagList.getCompoundTagAt(i);
+			FluidTank tank = new FluidTank(quality.storage);
+			if(tank.getFluidAmount()>0){
+				r.add(tank.readFromNBT(fluid));
+			}
+		}
+		return r;
 	}
 }
 
