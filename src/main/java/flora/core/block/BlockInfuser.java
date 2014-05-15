@@ -34,6 +34,11 @@ public class BlockInfuser extends Block {
 	}
 
 	@Override
+	public boolean hasTileEntity(int metadata) {
+		return true;
+	}
+
+	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
 		dropItems(world, x, y, z);
 		super.breakBlock(world, x, y, z, block, p_149749_6_);

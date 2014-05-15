@@ -16,10 +16,10 @@ public class ContainerInfuser extends Container {
 
 
 
-		addSlotToContainer(new SlotFloraArmor(tileEntity, 0, 62, 50, 0));
-		addSlotToContainer(new SlotFloraArmor(tileEntity, 1, 72, 50, 1));
-		addSlotToContainer(new SlotFloraArmor(tileEntity, 2, 82, 50, 2));
-		addSlotToContainer(new SlotFloraArmor(tileEntity, 3, 92, 50, 3));
+		addSlotToContainer(new SlotFloraArmor(tileEntity, 0, 42, 60, 0));
+		addSlotToContainer(new SlotFloraArmor(tileEntity, 1, 62, 60, 1));
+		addSlotToContainer(new SlotFloraArmor(tileEntity, 2, 82, 60, 2));
+		addSlotToContainer(new SlotFloraArmor(tileEntity, 3, 102, 60, 3));
 		bindPlayerInventory(inventoryPlayer);
 	}
 
@@ -68,6 +68,6 @@ public class ContainerInfuser extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return false;
+		return true;
 	}
 }
