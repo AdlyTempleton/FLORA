@@ -5,6 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+
+import java.util.ArrayList;
 
 public class TileInfuser extends TileEntity implements IInventory{
 	public TileInfuser() {
@@ -99,5 +103,37 @@ public class TileInfuser extends TileEntity implements IInventory{
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return var2.getItem() instanceof ItemArmorFLORA && ((ItemArmorFLORA) var2.getItem()).type.ordinal()==var1;
+	}
+
+	public boolean fillArmorWithFluid(FluidStack fluid){
+		for(int i=0;i<4;i++){
+			ItemStack item=inv[i];
+			if(item.getItem() instanceof ItemArmorFLORA){
+				//Check if total fluid amount is less than capacity
+				int space= ((ItemArmorFLORA) item.getItem()).getFluidCapacity() - ((ItemArmorFLORA) item.getItem()).getTotalFluidAmount(item) ;
+				if(space > 0){
+					ArrayList<FluidTank> tanks=((ItemArmorFLORA) item.getItem()).getFluidTanks(item);
+					for (FluidTank tank:tanks){
+						if(tank.getFluid().getFluid()==fluid.getFluid()){
+							int drain=Math.min(space, fluid.amount);
+							tank.fill(new FluidStack(fluid.getFluid(), drain), true);
+							fluid.amount-=drain;
+							((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
+							if(fluid.amount<=0){
+								return true;
+							}
+
+						}
+					}
+					if(space>=fluid.amount){
+						tanks.add(new FluidTank(fluid, ((ItemArmorFLORA) item.getItem()).getFluidCapacity()));
+						((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 }

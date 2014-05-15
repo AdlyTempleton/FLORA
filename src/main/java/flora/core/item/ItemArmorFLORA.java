@@ -83,7 +83,7 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 		if(nbt==null){
 			return r;
 		}
-		NBTTagList tagList=nbt.getTagList("",Constants.NBT.TAG_COMPOUND);
+		NBTTagList tagList=nbt.getTagList(NBT_FLUID_TAG_LIST,Constants.NBT.TAG_COMPOUND);
 		for(int i=0;i<tagList.tagCount();i++){
 			NBTTagCompound fluid=tagList.getCompoundTagAt(i);
 			FluidTank tank = new FluidTank(quality.storage);
@@ -92,6 +92,34 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 			}
 		}
 		return r;
+	}
+
+	public void setFluidTanks(ItemStack item, ArrayList<FluidTank> fluids){
+		if(item.stackTagCompound==null){
+			item.stackTagCompound=new NBTTagCompound();
+		}
+
+		NBTTagCompound nbt=item.stackTagCompound;
+
+		NBTTagList list=new NBTTagList();
+		for(FluidTank tank:fluids){
+			NBTTagCompound tankCompound=new NBTTagCompound();
+			tank.writeToNBT(tankCompound);
+			list.appendTag(tankCompound);
+		}
+		nbt.setTag(NBT_FLUID_TAG_LIST, list);
+	}
+
+	public int getTotalFluidAmount(ItemStack item){
+		int i=0;
+		for(FluidTank tank:getFluidTanks(item)){
+			i+=tank.getFluidAmount();
+		}
+		return i;
+	}
+
+	public int getFluidCapacity(){
+		return quality.storage;
 	}
 }
 
