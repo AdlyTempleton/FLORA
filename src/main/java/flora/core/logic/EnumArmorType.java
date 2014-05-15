@@ -2,9 +2,9 @@ package flora.core.logic;
 
 public enum EnumArmorType {
 
-	LEGS("Leggings"),
 	HEAD("Helm"),
 	CHEST("Chestplate"),
+	LEGS("Leggings"),
 	FEET("Boots");
 
 	public String name;

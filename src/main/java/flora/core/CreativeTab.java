@@ -1,6 +1,6 @@
 package flora.core;
 
-import flora.core.item.ItemArmor;
+import flora.core.item.ItemArmorFLORA;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -11,6 +11,6 @@ public class CreativeTab extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ItemArmor.instance;
+		return ItemArmorFLORA.armors[13];
 	}
 }
