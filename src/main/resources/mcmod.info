@@ -11,6 +11,6 @@
   "credits": "Textures done by Blorph",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": ["ThermalFoundation"]
+  "dependencies": []
 }
 ]
