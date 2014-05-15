@@ -1,6 +1,7 @@
 package flora.core.gui;
 
 import flora.core.block.TileInfuser;
+import flora.core.item.ItemArmorFLORA;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -26,7 +27,7 @@ public class ContainerInfuser extends Container {
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
+				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 4,
 						8 + j * 18, 84 + i * 18));
 			}
 		}
@@ -43,13 +44,18 @@ public class ContainerInfuser extends Container {
 		if (slotObject != null && slotObject.getHasStack()) {
 			ItemStack stackInSlot = slotObject.getStack();
 			stack = stackInSlot.copy();
-			if (slot < 9) {
-				if (!this.mergeItemStack(stackInSlot, 0, 35, true)) {
+			if (slot < 4) {
+				if (!this.mergeItemStack(stackInSlot, 0, 31, true)) {
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) {
-				return null;
+			if (stackInSlot.getItem() instanceof ItemArmorFLORA && stackInSlot.stackSize==1){
+				int i=((ItemArmorFLORA) stackInSlot.getItem()).type.ordinal();
+				Slot targetSlot= (Slot) inventorySlots.get(i);
+				if(targetSlot.isItemValid(stackInSlot) && !targetSlot.getHasStack()){
+					targetSlot.putStack(stackInSlot);
+					slotObject.putStack(null);
+				}
 			}
 
 			if (stackInSlot.stackSize == 0) {
