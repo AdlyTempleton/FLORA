@@ -4,18 +4,20 @@ import flora.core.item.ItemArmorFLORA;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
-public class TileInfuser extends TileEntity implements IInventory, IFluidHandler{
+public class TileInfuser extends TileEntity implements IInventory, IFluidHandler {
 	public TileInfuser() {
 		super();
 	}
 
-	private ItemStack[] inv=new ItemStack[4];
+	private ItemStack[] inv = new ItemStack[4];
 
 	@Override
 	public int getSizeInventory() {
@@ -29,45 +31,41 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 
 	@Override
 	public ItemStack decrStackSize(int par1, int par2) {
-		if (inv[par1] != null){
+		if (inv[par1] != null) {
 			ItemStack itemstack;
 
-			if (inv[par1].stackSize <= par2){
+			if (inv[par1].stackSize <= par2) {
 				itemstack = inv[par1];
 				inv[par1] = null;
 				return itemstack;
-			}
-			else{
+			} else {
 				itemstack = inv[par1].splitStack(par2);
 
-				if (inv[par1].stackSize == 0){
+				if (inv[par1].stackSize == 0) {
 					inv[par1] = null;
 				}
 
 				return itemstack;
 			}
-		}
-		else{
+		} else {
 			return null;
 		}
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
-		if (inv[var1] != null){
+		if (inv[var1] != null) {
 			ItemStack itemstack = inv[var1];
 			inv[var1] = null;
 			return itemstack;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		inv[var1]=var2;
+		inv[var1] = var2;
 	}
 
 	@Override
@@ -102,34 +100,34 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		return var2.getItem() instanceof ItemArmorFLORA && ((ItemArmorFLORA) var2.getItem()).type.ordinal()==var1;
+		return var2.getItem() instanceof ItemArmorFLORA && ((ItemArmorFLORA) var2.getItem()).type.ordinal() == var1;
 	}
 
-	public boolean fillArmorWithFluid(FluidStack fluid, boolean doFill){
-		for(int i=0;i<4;i++){
-			ItemStack item=inv[i];
-			if(item!=null && item.getItem() instanceof ItemArmorFLORA){
+	public boolean fillArmorWithFluid(FluidStack fluid, boolean doFill) {
+		for (int i = 0; i < 4; i++) {
+			ItemStack item = inv[i];
+			if (item != null && item.getItem() instanceof ItemArmorFLORA) {
 				//Check if total fluid amount is less than capacity
-				int space= ((ItemArmorFLORA) item.getItem()).getFluidCapacity() - ((ItemArmorFLORA) item.getItem()).getTotalFluidAmount(item) ;
-				if(space > 0){
-					ArrayList<FluidTank> tanks=((ItemArmorFLORA) item.getItem()).getFluidTanks(item);
-					for (FluidTank tank:tanks){
-						if(tank.getFluid().getFluid()==fluid.getFluid()){
-							int drain=Math.min(space, fluid.amount);
+				int space = ((ItemArmorFLORA) item.getItem()).getFluidCapacity() - ((ItemArmorFLORA) item.getItem()).getTotalFluidAmount(item);
+				if (space > 0) {
+					ArrayList<FluidTank> tanks = ((ItemArmorFLORA) item.getItem()).getFluidTanks(item);
+					for (FluidTank tank : tanks) {
+						if (tank.getFluid().getFluid() == fluid.getFluid()) {
+							int drain = Math.min(space, fluid.amount);
 							tank.fill(new FluidStack(fluid.getFluid(), drain), true);
-							fluid.amount-=drain;
-							if(doFill){
+							fluid.amount -= drain;
+							if (doFill) {
 								((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
 							}
-							if(fluid.amount<=0){
+							if (fluid.amount <= 0) {
 								return true;
 							}
 
 						}
 					}
-					if(space>=fluid.amount){
+					if (space >= fluid.amount) {
 						tanks.add(new FluidTank(fluid, ((ItemArmorFLORA) item.getItem()).getFluidCapacity()));
-						if(doFill){
+						if (doFill) {
 							((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
 						}
 						return true;
@@ -166,10 +164,10 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 		return false;
 	}
 
-	public ArrayList<FluidTank> getTotalFluidTank(){
-		ArrayList<FluidTank> r=new ArrayList<FluidTank>();
-		for(int i=0;i<4;i++){
-			if(inv[i]!=null && inv[i].getItem() instanceof ItemArmorFLORA){
+	public ArrayList<FluidTank> getTotalFluidTank() {
+		ArrayList<FluidTank> r = new ArrayList<FluidTank>();
+		for (int i = 0; i < 4; i++) {
+			if (inv[i] != null && inv[i].getItem() instanceof ItemArmorFLORA) {
 				r.addAll(((ItemArmorFLORA) inv[i].getItem()).getFluidTanks(inv[i]));
 			}
 		}
@@ -178,10 +176,10 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 	}
 
 	public int getTotalFluidAmount() {
-		int r=0;
-		for(int i=0;i<4;i++){
-			if(inv[i]!=null && inv[i].getItem() instanceof ItemArmorFLORA){
-				r+=(((ItemArmorFLORA) inv[i].getItem()).getTotalFluidAmount(inv[i]));
+		int r = 0;
+		for (int i = 0; i < 4; i++) {
+			if (inv[i] != null && inv[i].getItem() instanceof ItemArmorFLORA) {
+				r += (((ItemArmorFLORA) inv[i].getItem()).getTotalFluidAmount(inv[i]));
 			}
 		}
 
@@ -190,13 +188,49 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		ArrayList<FluidTank> tanks=getTotalFluidTank();
-		FluidTankInfo[] r= new FluidTankInfo[tanks.size()];
-		for(int i=0;i<tanks.size();i++){
-			r[i]=tanks.get(i).getInfo();
+		ArrayList<FluidTank> tanks = getTotalFluidTank();
+		FluidTankInfo[] r = new FluidTankInfo[tanks.size()];
+		for (int i = 0; i < tanks.size(); i++) {
+			r[i] = tanks.get(i).getInfo();
 		}
 		return r;
 	}
 
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		NBTTagList tagList = nbt.getTagList("Items", 10);
+		this.inv = new ItemStack[this.getSizeInventory()];
 
+		for (int i = 0; i < tagList.tagCount(); ++i)
+		{
+			NBTTagCompound itemStackCompound = tagList.getCompoundTagAt(i);
+			byte slot = itemStackCompound.getByte("Slot");
+
+			if (slot >= 0 && slot < this.inv.length)
+			{
+				this.inv[slot] = ItemStack.loadItemStackFromNBT(itemStackCompound);
+			}
+		}
+
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		NBTTagList tagList = new NBTTagList();
+
+		for (int i = 0; i < this.inv.length; ++i)
+		{
+			if (this.inv[i] != null)
+			{
+				NBTTagCompound stackTagCompound = new NBTTagCompound();
+				stackTagCompound.setByte("Slot", (byte) i);
+				this.inv[i].writeToNBT(stackTagCompound);
+				tagList.appendTag(stackTagCompound);
+			}
+		}
+
+		nbt.setTag("Items", tagList);
+	}
 }
