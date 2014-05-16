@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
@@ -51,29 +52,29 @@ public class BlockInfuser extends Block {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int metadata, float what, float these, float are) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		if (tileEntity == null || player.isSneaking()) {
+		if (tileEntity == null) {
 			return false;
 		}
 		if(player.inventory.getCurrentItem() !=null && (player.inventory.getCurrentItem().getItem() instanceof ItemBucket ||player.inventory.getCurrentItem().getItem() instanceof ItemBucketMilk)){
 			FluidStack fluid=null;
 			String fluidName=null;
 			String stackName=player.inventory.getCurrentItem().getUnlocalizedName();
-			if(stackName.equals("bucketRedstone")){
+			if(stackName.contains("bucketRedstone")){
 				fluidName="redstone";
 			}
-			if(stackName.equals("bucketGlowstone")){
+			if(stackName.contains("bucketGlowstone")){
 				fluidName="glowstone";
 			}
-			if(stackName.equals("bucketEnder")){
+			if(stackName.contains("bucketEnder")){
 				fluidName="ender";
 			}
-			if(stackName.equals("bucketPyrotheum")){
+			if(stackName.contains("bucketPyrotheum")){
 				fluidName="pyrotheum";
 			}
-			if(stackName.equals("bucketCryotheum")){
+			if(stackName.contains("bucketCryotheum")){
 				fluidName="cyrotheum";
 			}
-			if(stackName.equals("bucketCoal")){
+			if(stackName.contains("bucketCoal")){
 				fluidName="coal";
 			}
 			if (fluidName==null){
@@ -81,10 +82,19 @@ public class BlockInfuser extends Block {
 			}
 
 			FluidStack fluidStack=new FluidStack(FluidRegistry.getFluid(fluidName), 1000);
-
-			((TileInfuser)tileEntity).fillArmorWithFluid(fluidStack, true);
+			if(((TileInfuser)tileEntity).fillArmorWithFluid(fluidStack, true)){
+				player.getHeldItem().stackSize--;
+				if(player.getHeldItem().stackSize==0){
+					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+				}
+				player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
+				return true;
+			}
+			return false;
 		}
-		player.openGui(FLORA.instance, 0, world, x, y, z);
+		if(!player.isSneaking()){
+			player.openGui(FLORA.instance, 0, world, x, y, z);
+		}
 		return true;
 	}
 

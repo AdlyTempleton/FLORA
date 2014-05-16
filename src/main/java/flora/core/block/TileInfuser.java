@@ -108,7 +108,7 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 	public boolean fillArmorWithFluid(FluidStack fluid, boolean doFill){
 		for(int i=0;i<4;i++){
 			ItemStack item=inv[i];
-			if(item.getItem() instanceof ItemArmorFLORA){
+			if(item!=null && item.getItem() instanceof ItemArmorFLORA){
 				//Check if total fluid amount is less than capacity
 				int space= ((ItemArmorFLORA) item.getItem()).getFluidCapacity() - ((ItemArmorFLORA) item.getItem()).getTotalFluidAmount(item) ;
 				if(space > 0){

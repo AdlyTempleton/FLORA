@@ -15,8 +15,10 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidTank;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 
@@ -48,6 +50,16 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 		}
 	}
 
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		if(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+			for(FluidTank tank:getFluidTanks(par1ItemStack)){
+				par3List.add(tank.getFluid().getFluid().getName()+" : "+tank.getFluidAmount()+"mb");
+			}
+		}else{
+			par3List.add("Sneak to view loaded fluids");
+		}
+	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack par1ItemStack) {
@@ -82,6 +94,7 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 		for(int i=0;i<tagList.tagCount();i++){
 			NBTTagCompound fluid=tagList.getCompoundTagAt(i);
 			FluidTank tank = new FluidTank(quality.storage);
+			tank.readFromNBT(fluid);
 			if(tank.getFluidAmount()>0){
 				r.add(tank.readFromNBT(fluid));
 			}
