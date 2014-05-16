@@ -1,5 +1,6 @@
 package flora.core;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -10,9 +11,12 @@ import flora.core.block.TileInfuser;
 import flora.core.gui.ContainerInfuser;
 import flora.core.gui.GuiInfuser;
 import flora.core.item.ItemArmorFLORA;
+import flora.core.logic.ArmorEffectsManager;
+import flora.core.logic.KeyHandlerEnder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy implements IGuiHandler{
 
@@ -26,8 +30,17 @@ public class CommonProxy implements IGuiHandler{
 	public void postInit(FMLPostInitializationEvent event) {
 	}
 
+	public ArmorEffectsManager effectsManager;
+
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(FLORA.instance, FLORA.proxy);
+		effectsManager=new ArmorEffectsManager();
+		FMLCommonHandler.instance().bus().register(effectsManager);
+		MinecraftForge.EVENT_BUS.register(effectsManager);
+
+		FMLCommonHandler.instance().bus().register(new KeyHandlerEnder());
+
+		NetworkRegistry.INSTANCE.newChannel(Constants.modId, new PacketHandler());
 	}
 
 	@Override

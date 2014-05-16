@@ -90,9 +90,8 @@ public class BlockInfuser extends Block {
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 				}
 				player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
-				return true;
 			}
-			return false;
+			return true;
 		}
 		if(!player.isSneaking()){
 			player.openGui(FLORA.instance, 0, world, x, y, z);

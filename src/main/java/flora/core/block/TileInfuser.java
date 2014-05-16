@@ -125,8 +125,8 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 
 						}
 					}
-					if (space >= fluid.amount) {
-						tanks.add(new FluidTank(fluid, ((ItemArmorFLORA) item.getItem()).getFluidCapacity()));
+					if (space >= 0) {
+						tanks.add(new FluidTank(new FluidStack(fluid.getFluid(), Math.min(space, fluid.amount)), ((ItemArmorFLORA) item.getItem()).getFluidCapacity()));
 						if (doFill) {
 							((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
 						}
