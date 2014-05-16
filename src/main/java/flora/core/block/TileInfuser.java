@@ -5,12 +5,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
-public class TileInfuser extends TileEntity implements IInventory{
+public class TileInfuser extends TileEntity implements IInventory, IFluidHandler{
 	public TileInfuser() {
 		super();
 	}
@@ -105,7 +105,7 @@ public class TileInfuser extends TileEntity implements IInventory{
 		return var2.getItem() instanceof ItemArmorFLORA && ((ItemArmorFLORA) var2.getItem()).type.ordinal()==var1;
 	}
 
-	public boolean fillArmorWithFluid(FluidStack fluid){
+	public boolean fillArmorWithFluid(FluidStack fluid, boolean doFill){
 		for(int i=0;i<4;i++){
 			ItemStack item=inv[i];
 			if(item.getItem() instanceof ItemArmorFLORA){
@@ -118,7 +118,9 @@ public class TileInfuser extends TileEntity implements IInventory{
 							int drain=Math.min(space, fluid.amount);
 							tank.fill(new FluidStack(fluid.getFluid(), drain), true);
 							fluid.amount-=drain;
-							((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
+							if(doFill){
+								((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
+							}
 							if(fluid.amount<=0){
 								return true;
 							}
@@ -127,7 +129,9 @@ public class TileInfuser extends TileEntity implements IInventory{
 					}
 					if(space>=fluid.amount){
 						tanks.add(new FluidTank(fluid, ((ItemArmorFLORA) item.getItem()).getFluidCapacity()));
-						((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
+						if(doFill){
+							((ItemArmorFLORA) item.getItem()).setFluidTanks(item, tanks);
+						}
 						return true;
 					}
 				}
@@ -135,5 +139,51 @@ public class TileInfuser extends TileEntity implements IInventory{
 		}
 
 		return false;
+	}
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		return fillArmorWithFluid(resource, doFill) ? 0 : 1000;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		return true;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		return false;
+	}
+
+	public ArrayList<FluidTank> getTotalFluidTank(){
+		ArrayList<FluidTank> r=new ArrayList<FluidTank>();
+		for(int i=0;i<4;i++){
+			if(inv[i].getItem() instanceof ItemArmorFLORA){
+				r.addAll(((ItemArmorFLORA) inv[i].getItem()).getFluidTanks(inv[i]));
+			}
+		}
+
+		return r;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		ArrayList<FluidTank> tanks=getTotalFluidTank();
+		FluidTankInfo[] r= new FluidTankInfo[tanks.size()];
+		for(int i=0;i<tanks.size();i++){
+			r[i]=tanks.get(i).getInfo();
+		}
+		return r;
 	}
 }

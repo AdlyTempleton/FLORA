@@ -49,6 +49,7 @@ public class BlockInfuser extends Block {
 		if (tileEntity == null || player.isSneaking()) {
 			return false;
 		}
+
 		player.openGui(FLORA.instance, 0, world, x, y, z);
 		return true;
 	}
