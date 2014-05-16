@@ -10,7 +10,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -55,7 +54,7 @@ public class BlockInfuser extends Block {
 		if (tileEntity == null) {
 			return false;
 		}
-		if(player.inventory.getCurrentItem() !=null && (player.inventory.getCurrentItem().getItem() instanceof ItemBucket ||player.inventory.getCurrentItem().getItem() instanceof ItemBucketMilk)){
+		if(player.inventory.getCurrentItem() !=null && (player.inventory.getCurrentItem().getItem() instanceof ItemBucket)){
 			FluidStack fluid=null;
 			String fluidName=null;
 			String stackName=player.inventory.getCurrentItem().getUnlocalizedName();
@@ -72,10 +71,13 @@ public class BlockInfuser extends Block {
 				fluidName="pyrotheum";
 			}
 			if(stackName.contains("bucketCryotheum")){
-				fluidName="cyrotheum";
+				fluidName="cryotheum";
 			}
 			if(stackName.contains("bucketCoal")){
 				fluidName="coal";
+			}
+			if(stackName.contains("bucketMana")){
+				fluidName="mana";
 			}
 			if (fluidName==null){
 				return false;

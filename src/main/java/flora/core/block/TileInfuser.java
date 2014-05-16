@@ -169,8 +169,19 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 	public ArrayList<FluidTank> getTotalFluidTank(){
 		ArrayList<FluidTank> r=new ArrayList<FluidTank>();
 		for(int i=0;i<4;i++){
-			if(inv[i].getItem() instanceof ItemArmorFLORA){
+			if(inv[i]!=null && inv[i].getItem() instanceof ItemArmorFLORA){
 				r.addAll(((ItemArmorFLORA) inv[i].getItem()).getFluidTanks(inv[i]));
+			}
+		}
+
+		return r;
+	}
+
+	public int getTotalFluidAmount() {
+		int r=0;
+		for(int i=0;i<4;i++){
+			if(inv[i]!=null && inv[i].getItem() instanceof ItemArmorFLORA){
+				r+=(((ItemArmorFLORA) inv[i].getItem()).getTotalFluidAmount(inv[i]));
 			}
 		}
 
@@ -186,4 +197,6 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 		}
 		return r;
 	}
+
+
 }
