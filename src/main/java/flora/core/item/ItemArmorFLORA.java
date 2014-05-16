@@ -20,8 +20,6 @@ import java.util.ArrayList;
 
 public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 
-
-
 	static ArmorMaterial[] materials;
 
 	public ItemArmorFLORA(EnumArmorType type, EnumArmorQuality quality) {
@@ -29,13 +27,10 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 		this.type=type;
 		this.quality=quality;
 	}
-
 	public static ItemArmorFLORA[] armors= new ItemArmorFLORA[ 16 ];
-
 	public EnumArmorQuality quality;
 	public EnumArmorType type;
 	public static void register(){
-
 		materials=new ArmorMaterial[4];
 		for(int i=0;i<4;i++){
 			EnumArmorQuality quality=EnumArmorQuality.values()[i];

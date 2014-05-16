@@ -1,5 +1,6 @@
 package flora.core.block;
 
+import cofh.item.ItemBucket;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flora.core.CommonProxy;
 import flora.core.FLORA;
@@ -8,10 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Random;
 
@@ -26,6 +30,7 @@ public class BlockInfuser extends Block {
 		instance.setBlockName(blockName);
 		instance.setCreativeTab(CommonProxy.tab);
 		GameRegistry.registerBlock(instance, instance.getUnlocalizedName());
+		GameRegistry.registerTileEntity(TileInfuser.class, blockName);
 	}
 
 	@Override
@@ -49,7 +54,36 @@ public class BlockInfuser extends Block {
 		if (tileEntity == null || player.isSneaking()) {
 			return false;
 		}
+		if(player.inventory.getCurrentItem() !=null && (player.inventory.getCurrentItem().getItem() instanceof ItemBucket ||player.inventory.getCurrentItem().getItem() instanceof ItemBucketMilk)){
+			FluidStack fluid=null;
+			String fluidName=null;
+			String stackName=player.inventory.getCurrentItem().getUnlocalizedName();
+			if(stackName.equals("bucketRedstone")){
+				fluidName="redstone";
+			}
+			if(stackName.equals("bucketGlowstone")){
+				fluidName="glowstone";
+			}
+			if(stackName.equals("bucketEnder")){
+				fluidName="ender";
+			}
+			if(stackName.equals("bucketPyrotheum")){
+				fluidName="pyrotheum";
+			}
+			if(stackName.equals("bucketCryotheum")){
+				fluidName="cyrotheum";
+			}
+			if(stackName.equals("bucketCoal")){
+				fluidName="coal";
+			}
+			if (fluidName==null){
+				return false;
+			}
 
+			FluidStack fluidStack=new FluidStack(FluidRegistry.getFluid(fluidName), 1000);
+
+			((TileInfuser)tileEntity).fillArmorWithFluid(fluidStack, true);
+		}
 		player.openGui(FLORA.instance, 0, world, x, y, z);
 		return true;
 	}
