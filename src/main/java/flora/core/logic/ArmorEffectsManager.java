@@ -71,6 +71,7 @@ public class ArmorEffectsManager{
 		float[][] fluidInteractionMatrix=getEffectMatrix(event.player);
 		float intensity;
 		Random rand=new Random();
+		EntityPlayer player=event.player;
 		if(!event.player.worldObj.isRemote){
 			//Glowstone-Glowstone
 			if(fluidInteractionMatrix[6][6]>0){
@@ -102,7 +103,13 @@ public class ArmorEffectsManager{
 					event.player.setAir(200);
 				}
 			}
-
+			//Redstone-Glowstone
+			if(fluidInteractionMatrix[5][6]>0){
+				intensity=fluidInteractionMatrix[5][6];
+				if(rand.nextInt(720000)<intensity){
+					event.player.worldObj.createExplosion(player, player.posX, player.posY, player.posZ, 20F, true);
+				}
+			}
 		}
 
 	}
