@@ -29,21 +29,36 @@ public class PacketHandler extends SimpleChannelInboundHandler<FMLProxyPacket> {
 				INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
 				EntityPlayer player = ((NetHandlerPlayServer) netHandler).playerEntity;
 				if(number==0){
-					if(ArmorEffectsManager.getEffectMatrix(player)[4][4]>0){
-						float intensity=ArmorEffectsManager.getEffectMatrix(player)[4][4];
-						//Raytrace based off code from MachineMuse
-						Vec3 playerPosition = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-						Vec3 playerLook = player.getLookVec();
+					if(player.isSneaking()){
 
-						Vec3 playerViewOffset = Vec3.createVectorHelper(playerPosition.xCoord + playerLook.xCoord * intensity, playerPosition.yCoord
-								+ playerLook.yCoord * intensity, playerPosition.zCoord + playerLook.zCoord * intensity);
-						MovingObjectPosition movingObjectPosition=player.worldObj.rayTraceBlocks(playerPosition, playerViewOffset);
+						if(ArmorEffectsManager.getEffectMatrix(player)[4][6]>0){
 
-						if(movingObjectPosition!=null){
-							player.setPositionAndUpdate(movingObjectPosition.blockX, movingObjectPosition.blockY+1, movingObjectPosition.blockZ);
+							float intensity=ArmorEffectsManager.getEffectMatrix(player)[4][6];
+
+							for(int i=1;i<intensity;i++){
+								if(player.worldObj.checkBlockCollision(player.boundingBox.getOffsetBoundingBox(0, -i, 0))){
+									player.setPositionAndUpdate(player.posX, player.posY-i, player.posZ);
+									return;
+								}
+
+							}
 						}
+					}else{
+						if(ArmorEffectsManager.getEffectMatrix(player)[4][4]>0){
+							float intensity=ArmorEffectsManager.getEffectMatrix(player)[4][4];
+							//Raytrace based off code from MachineMuse
+							Vec3 playerPosition = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+							Vec3 playerLook = player.getLookVec();
 
+							Vec3 playerViewOffset = Vec3.createVectorHelper(playerPosition.xCoord + playerLook.xCoord * intensity, playerPosition.yCoord
+									+ playerLook.yCoord * intensity, playerPosition.zCoord + playerLook.zCoord * intensity);
+							MovingObjectPosition movingObjectPosition=player.worldObj.rayTraceBlocks(playerPosition, playerViewOffset);
 
+							if(movingObjectPosition!=null){
+								player.setPositionAndUpdate(movingObjectPosition.blockX, movingObjectPosition.blockY+1, movingObjectPosition.blockZ);
+							}
+
+						}
 					}
 				}
 				if(number==1){
