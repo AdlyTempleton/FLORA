@@ -12,11 +12,13 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
 import thermalfoundation.fluid.TFFluids;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ArmorEffectsManager{
@@ -126,18 +128,51 @@ public class ArmorEffectsManager{
 			if(fluidInteractionMatrix[2][6]>0){
 				intensity=fluidInteractionMatrix[2][6];
 
-				if(player.worldObj.getBiomeGenForCoords(player.chunkCoordX, player.chunkCoordZ).temperature<.3){
+				if(player.worldObj.getBiomeGenForCoords(player.chunkCoordX, player.chunkCoordZ).temperature<=.2){
 					if(rand.nextInt(1000)<intensity){
 						player.attackEntityFrom(DamageSource.starve, 1F);
 					}
 				}
 			}
+			HashMap<String, Long> fireResistenceCooldownNextIteration=new HashMap<String, Long>();
+			for(Map.Entry<String, Long> entry:fireResistenceCooldown.entrySet()){
+				fireResistenceCooldownNextIteration.put(entry.getKey(), entry.getValue()-1);
+			}
+			fireResistenceCooldown=fireResistenceCooldownNextIteration;
 		}
 
 	}
 
+
+	private static HashMap<String, Long> fireResistenceCooldown=new HashMap<String, Long>();
 	@SubscribeEvent
-	public void onPlayerHurt(LivingFallEvent event){
+	public void onPlayerHurt(LivingHurtEvent event){
+		if(event.entity instanceof EntityPlayer){
+
+			EntityPlayer player= (EntityPlayer) event.entity;
+			float[][] fluidInteractionMatrix=getEffectMatrix(player);
+			float intensity;
+			Random rand=new Random();
+			if(!player.worldObj.isRemote){
+				if(fluidInteractionMatrix[1][6]>0){
+					intensity=fluidInteractionMatrix[1][6];
+					if(event.source.isFireDamage()){
+						if(!fireResistenceCooldown.containsKey(player.getDisplayName())||fireResistenceCooldown.get(player.getDisplayName())<intensity*10){
+							long currentCooldown=0;
+							if(fireResistenceCooldown.containsKey(player.getDisplayName())){
+								currentCooldown=fireResistenceCooldown.get(player.getDisplayName());
+							}
+							fireResistenceCooldown.put(player.getDisplayName(), Math.max(40, currentCooldown+40));
+							event.ammount=0;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerFall(LivingFallEvent event){
 		//Pyrotheum-Pyrotheum
 
 		if(event.entity instanceof EntityPlayer){
