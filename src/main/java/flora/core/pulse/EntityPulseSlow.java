@@ -1,5 +1,6 @@
 package flora.core.pulse;
 
+import flora.core.ClientProxy;
 import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -8,7 +9,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import thermalfoundation.block.TFBlocks;
 
 public class EntityPulseSlow extends EntityPulse {
 
@@ -18,12 +18,12 @@ public class EntityPulseSlow extends EntityPulse {
 
 	@Override
 	public IIcon getRenderIcon() {
-		return TFBlocks.blockFluidCryotheum.getIcon(0, 0);
+		return ClientProxy.cryotheumPulseIcon;
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/cryotheum.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/cryotheum_pulse.png");
 	}
 
 	public EntityPulseSlow(World par1World) {

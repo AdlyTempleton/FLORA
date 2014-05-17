@@ -1,12 +1,13 @@
 package flora.core.pulse;
 
+import flora.core.ClientProxy;
 import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import thermalfoundation.block.TFBlocks;
 
 import java.util.Random;
 
@@ -16,13 +17,13 @@ public class EntityPulseEnder extends EntityPulse {
 	}
 
 	@Override
-	public IIcon getRenderIcon() {
-		return TFBlocks.blockFluidEnder.getIcon(0, 0);
+	public IIcon getRenderIcon(){
+		return ClientProxy.enderPulseIcon;
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/ender.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/ender_pulse.png");
 	}
 
 	public EntityPulseEnder(World par1World) {
@@ -32,7 +33,7 @@ public class EntityPulseEnder extends EntityPulse {
 
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		if(var1.entityHit!=sender&&var1.entityHit!=null && var1.entityHit instanceof EntityLivingBase){
+		if(!(var1.entityHit instanceof EntityPlayer)&&var1.entityHit!=null && var1.entityHit instanceof EntityLivingBase && !var1.entityHit.worldObj.isRemote){
 			Random rand=new Random();
 			((EntityLivingBase) var1.entityHit).setPositionAndUpdate(var1.entityHit.posX+(rand.nextDouble()*10)-5, var1.entityHit.posY+5, var1.entityHit.posZ+(rand.nextDouble()*10)-5);
 		}

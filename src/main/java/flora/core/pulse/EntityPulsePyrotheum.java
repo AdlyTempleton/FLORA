@@ -1,12 +1,12 @@
 package flora.core.pulse;
 
+import flora.core.ClientProxy;
 import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import thermalfoundation.block.TFBlocks;
 
 public class EntityPulsePyrotheum extends EntityPulse{
 	public EntityPulsePyrotheum(World par1World, EntityLivingBase e, double par8, double par10, double par12) {
@@ -15,12 +15,12 @@ public class EntityPulsePyrotheum extends EntityPulse{
 
 	@Override
 	public IIcon getRenderIcon() {
-		return TFBlocks.blockFluidPyrotheum.getIcon(0, 0);
+		return ClientProxy.pyrotheumPulseIcon;
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/pyrotheum.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/pyrotheum_pulse.png");
 	}
 
 	public EntityPulsePyrotheum(World par1World) {

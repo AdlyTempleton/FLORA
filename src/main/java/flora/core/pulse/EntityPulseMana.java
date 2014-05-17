@@ -1,5 +1,6 @@
 package flora.core.pulse;
 
+import flora.core.ClientProxy;
 import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
@@ -8,7 +9,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import thermalfoundation.block.TFBlocks;
 
 public class EntityPulseMana extends EntityPulse {
 
@@ -18,7 +18,7 @@ public class EntityPulseMana extends EntityPulse {
 
 	@Override
 	public IIcon getRenderIcon() {
-		return TFBlocks.blockFluidMana.getIcon(0, 0);
+		return ClientProxy.manaPulseIcon;
 	}
 	public EntityPulseMana(World par1World) {
 		super(par1World);
@@ -26,7 +26,7 @@ public class EntityPulseMana extends EntityPulse {
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/mana.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/mana_pulse.png");
 	}
 
 

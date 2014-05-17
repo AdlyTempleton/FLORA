@@ -87,7 +87,7 @@ public class BlockInfuser extends Block {
 		if(side==0){
 			return iconBottom;
 		}
-		if(side==meta){
+		if(side==meta || (side==2 && meta==0)){
 			return iconFace;
 		}
 		return iconSide;

@@ -1,5 +1,6 @@
 package flora.core.pulse;
 
+import flora.core.ClientProxy;
 import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
@@ -7,7 +8,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import thermalfoundation.block.TFBlocks;
 
 public class EntityPulseCoal extends EntityPulse{
 
@@ -17,12 +17,12 @@ public class EntityPulseCoal extends EntityPulse{
 
 	@Override
 	public IIcon getRenderIcon() {
-		return TFBlocks.blockFluidCoal.getIcon(0, 0);
+		return ClientProxy.coalPulseIcon;
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/coal.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/coal_pulse.png");
 	}
 
 	public EntityPulseCoal(World par1World) {

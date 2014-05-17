@@ -1,23 +1,29 @@
 package flora.core.pulse;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderFireball;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class RenderPulse extends RenderFireball {
+public class RenderPulse extends Render {
 	public RenderPulse(float par1) {
-		super(par1);
 		size=par1;
 	}
 	float size;
+
 	@Override
-	protected ResourceLocation getEntityTexture(EntityFireball entityPulse) {
-		return ((EntityPulse)entityPulse).getResourceLocation();
+	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
+		doRender((EntityPulse)var1, var2, var4, var6, var8, var9);
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(Entity var1) {
+
+		return TextureMap.locationBlocksTexture;
 	}
 
 	@Override
@@ -45,9 +51,9 @@ public class RenderPulse extends RenderFireball {
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
 		tessellator.addVertexWithUV((double)(0.0F - f8), (double)(0.0F - f9), 0.0D, (double)f3, (double)f6);
-		tessellator.addVertexWithUV((double)(f7 - f8), (double)(0.0F - f9), 0.0D, (double)f4, (double)f6);
-		tessellator.addVertexWithUV((double)(f7 - f8), (double)(1.0F - f9), 0.0D, (double)f4, (double)f5);
-		tessellator.addVertexWithUV((double)(0.0F - f8), (double)(1.0F - f9), 0.0D, (double)f3, (double)f5);
+		tessellator.addVertexWithUV((double) (f7 - f8), (double) (0.0F - f9), 0.0D, (double) f4, (double) f6);
+		tessellator.addVertexWithUV((double) (f7 - f8), (double) (1.0F - f9), 0.0D, (double) f4, (double) f5);
+		tessellator.addVertexWithUV((double) (0.0F - f8), (double) (1.0F - f9), 0.0D, (double) f3, (double) f5);
 		tessellator.draw();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
