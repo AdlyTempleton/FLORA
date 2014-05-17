@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import flora.core.block.BlockInfuser;
 import flora.core.block.TileInfuser;
 import flora.core.gui.ContainerInfuser;
@@ -13,6 +14,7 @@ import flora.core.gui.GuiInfuser;
 import flora.core.item.ItemArmorFLORA;
 import flora.core.logic.ArmorEffectsManager;
 import flora.core.logic.KeyHandlerEnder;
+import flora.core.pulse.EntityPulseMana;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -41,6 +43,9 @@ public class CommonProxy implements IGuiHandler{
 		FMLCommonHandler.instance().bus().register(new KeyHandlerEnder());
 
 		NetworkRegistry.INSTANCE.newChannel(Constants.modId, new PacketHandler());
+
+
+		EntityRegistry.registerModEntity(EntityPulseMana.class, "Destabilized Mana Pulse", 0, FLORA.instance, 80, 1, true);
 	}
 
 	@Override

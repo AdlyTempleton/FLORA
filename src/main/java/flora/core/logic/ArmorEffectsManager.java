@@ -3,6 +3,9 @@ package flora.core.logic;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import flora.core.item.ItemArmorFLORA;
+import flora.core.pulse.EntityPulse;
+import flora.core.pulse.EntityPulseMana;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,6 +21,7 @@ import net.minecraftforge.fluids.FluidTank;
 import thermalfoundation.fluid.TFFluids;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -131,6 +135,21 @@ public class ArmorEffectsManager{
 				if(player.worldObj.getBiomeGenForCoords(player.chunkCoordX, player.chunkCoordZ).temperature<=.2){
 					if(rand.nextInt(1000)<intensity){
 						player.attackEntityFrom(DamageSource.starve, 1F);
+					}
+				}
+			}
+
+			//Redstone-Mana
+			if(fluidInteractionMatrix[3][5]>0){
+				intensity=fluidInteractionMatrix[3][5];
+				if(rand.nextInt(50)<intensity){
+					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
+					if(nearbyEntities.size()>1){
+						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+						if(target!=player){
+							EntityPulse e = new EntityPulseMana(player.worldObj, player, target.posX-player.posX, target.posY-player.posY, target.posZ-player.posZ);
+							player.worldObj.spawnEntityInWorld(e);
+						}
 					}
 				}
 			}
