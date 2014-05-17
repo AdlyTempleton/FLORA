@@ -4,6 +4,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import flora.core.item.ItemArmorFLORA;
 import flora.core.pulse.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,6 +75,7 @@ public class ArmorEffectsManager{
 		return fluidInteractionMatrix;
 	}
 
+
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event){
 		float[][] fluidInteractionMatrix=getEffectMatrix(event.player);
@@ -80,6 +83,8 @@ public class ArmorEffectsManager{
 		Random rand=new Random();
 		EntityPlayer player=event.player;
 		if(!event.player.worldObj.isRemote){
+
+
 			//Glowstone-Glowstone
 			if(fluidInteractionMatrix[6][6]>0){
 				intensity=fluidInteractionMatrix[6][6];
@@ -212,6 +217,52 @@ public class ArmorEffectsManager{
 					}
 				}
 			}
+
+			//Cyrotheum-Mana
+			if(fluidInteractionMatrix[3][2]>0){
+				intensity=fluidInteractionMatrix[3][2];
+				if(rand.nextInt(50000)<intensity){
+
+					player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel()-1);
+				}
+			}
+
+			//Pyrotheum-Mana
+			if(fluidInteractionMatrix[3][1]>0){
+				intensity=fluidInteractionMatrix[3][1];
+				player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 1, (int)Math.log10(intensity)));
+			}
+
+			//Pyrotheum-Cyrotheum
+			if(fluidInteractionMatrix[2][1]>0){
+				intensity=fluidInteractionMatrix[2][1];
+				player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 1, (int)Math.log10(intensity)));
+			}
+			//Coal-Cyrotheum
+			if(fluidInteractionMatrix[2][0]>0){
+				intensity=fluidInteractionMatrix[2][0];
+				player.addPotionEffect(new PotionEffect(Potion.digSpeed.id, 1, (int)Math.log10(intensity)));
+			}
+			//Ender-Mana
+			if(fluidInteractionMatrix[3][4]>0){
+				intensity=fluidInteractionMatrix[3][4];
+				player.addPotionEffect(new PotionEffect(Potion.jump.id, 1, (int)Math.log10(intensity)));
+			}
+			//Coal-Mana
+			if(fluidInteractionMatrix[0][3]>0){
+				intensity=fluidInteractionMatrix[0][3];
+				if(rand.nextInt(500)<intensity){
+					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
+					if(nearbyEntities.size()>1){
+
+						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+
+						EntityLivingBase newTarget=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+						target.setRevengeTarget(newTarget);
+					}
+				}
+			}
+
 			HashMap<String, Long> fireResistenceCooldownNextIteration=new HashMap<String, Long>();
 			for(Map.Entry<String, Long> entry:fireResistenceCooldown.entrySet()){
 				fireResistenceCooldownNextIteration.put(entry.getKey(), entry.getValue()-1);
@@ -225,6 +276,31 @@ public class ArmorEffectsManager{
 	private static HashMap<String, Long> fireResistenceCooldown=new HashMap<String, Long>();
 	@SubscribeEvent
 	public void onPlayerHurt(LivingHurtEvent event){
+		Entity attacker=event.source.getEntity();
+		if(attacker instanceof EntityPlayer){
+			if(!attacker.worldObj.isRemote){
+				EntityPlayer attackerPlayer= (EntityPlayer) attacker;
+				float[][] fluidInteractionMatrix=getEffectMatrix(attackerPlayer);
+				float intensity;
+				Random rand=new Random();
+
+				//Glowstone-Coal
+				if(fluidInteractionMatrix[0][6]>0){
+					intensity=fluidInteractionMatrix[0][6];
+					event.entity.setFire((int) (intensity*20));
+				}
+
+				//Coal-Pyrotheum
+				if(fluidInteractionMatrix[1][0]>0){
+					intensity=fluidInteractionMatrix[1][0];
+					if(event.entity.isBurning()){
+
+						event.entity.worldObj.createExplosion(event.entity, event.entity.posX, event.entity.posY, event.entity.posZ, (float) Math.sqrt(intensity), true);
+					}
+				}
+			}
+		}
+
 		if(event.entity instanceof EntityPlayer){
 
 			EntityPlayer player= (EntityPlayer) event.entity;
@@ -232,6 +308,40 @@ public class ArmorEffectsManager{
 			float intensity;
 			Random rand=new Random();
 			if(!player.worldObj.isRemote){
+
+
+
+				//Cyrotheum-Ender
+				if(fluidInteractionMatrix[2][4]>0){
+					intensity=fluidInteractionMatrix[2][4];
+					if(player.getHealth()-event.ammount<=4){
+						event.ammount=0;
+						int x= (int) ((int) player.posX + rand.nextInt((int) (6*intensity)) - ((int)3*intensity));
+						int z= (int) ((int) player.posZ + rand.nextInt((int) (6*intensity)) - ((int)3*intensity));
+						int y=255;
+						while(player.worldObj.isAirBlock(x, y-1, z)){
+							y--;
+						}
+						player.setPositionAndUpdate(x+.5, y, z+.5);
+					}
+				}
+
+				//Coal-Ender
+				if(fluidInteractionMatrix[0][4]>0){
+					intensity=fluidInteractionMatrix[0][4];
+					if(event.source.getEntity() instanceof EntityLiving){
+						event.ammount=0;
+						int x= (int) ((int) player.posX + rand.nextInt((int) (2*intensity)) - ((int)intensity));
+						int z= (int) ((int) player.posZ + rand.nextInt((int) (2*intensity)) - ((int)intensity));
+						int y=255;
+						while(player.worldObj.isAirBlock(x, y-1, z)){
+							y--;
+						}
+						((EntityLiving)event.source.getEntity()).setPositionAndUpdate(x + .5, y, z + .5);
+					}
+				}
+
+				//Pyrotheum-Glowstone
 				if(fluidInteractionMatrix[1][6]>0){
 					intensity=fluidInteractionMatrix[1][6];
 					if(event.source.isFireDamage()){
@@ -251,19 +361,30 @@ public class ArmorEffectsManager{
 
 	@SubscribeEvent
 	public void onPlayerFall(LivingFallEvent event){
-		//Pyrotheum-Pyrotheum
 
 		if(event.entity instanceof EntityPlayer){
 			float[][] fluidInteractionMatrix=getEffectMatrix((EntityPlayer) event.entity);
 			float intensity;
 			Random rand=new Random();
+
+			//Pyrotheum-Pyrotheum
 			if(fluidInteractionMatrix[1][1]>0){
 				intensity=fluidInteractionMatrix[1][1];
 				if(event.distance>2){
 					event.distance+=Math.sqrt(intensity);
 				}
 			}
+			//Ender-Pyrotheum
+			if(fluidInteractionMatrix[1][4]>0){
+				intensity=fluidInteractionMatrix[1][4];
+				event.distance/=intensity;
+
+			}
 		}
+
+
+
+
 	}
 
 }
