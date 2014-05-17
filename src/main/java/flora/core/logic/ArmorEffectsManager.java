@@ -6,9 +6,11 @@ import flora.core.item.ItemArmorFLORA;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
@@ -108,6 +110,26 @@ public class ArmorEffectsManager{
 				intensity=fluidInteractionMatrix[5][6];
 				if(rand.nextInt(720000)<intensity){
 					event.player.worldObj.createExplosion(player, player.posX, player.posY, player.posZ, 20F, true);
+				}
+			}
+
+			//Glowstone-Mana
+			if(fluidInteractionMatrix[3][6]>0){
+				intensity=fluidInteractionMatrix[3][6];
+				if(rand.nextInt(200000)<intensity){
+
+					player.getFoodStats().func_151686_a((ItemFood) Items.apple, new ItemStack(Items.apple));
+				}
+			}
+
+			//Glowstone-Cryotheum
+			if(fluidInteractionMatrix[2][6]>0){
+				intensity=fluidInteractionMatrix[2][6];
+
+				if(player.worldObj.getBiomeGenForCoords(player.chunkCoordX, player.chunkCoordZ).temperature<.3){
+					if(rand.nextInt(1000)<intensity){
+						player.attackEntityFrom(DamageSource.starve, 1F);
+					}
 				}
 			}
 		}
