@@ -9,6 +9,6 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-		RenderingRegistry.registerEntityRenderingHandler(EntityPulse.class, new RenderPulse(.5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityPulse.class, new RenderPulse(1F));
 	}
 }

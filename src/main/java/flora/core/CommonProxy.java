@@ -14,7 +14,7 @@ import flora.core.gui.GuiInfuser;
 import flora.core.item.ItemArmorFLORA;
 import flora.core.logic.ArmorEffectsManager;
 import flora.core.logic.KeyHandlerEnder;
-import flora.core.pulse.EntityPulseMana;
+import flora.core.pulse.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -45,7 +45,15 @@ public class CommonProxy implements IGuiHandler{
 		NetworkRegistry.INSTANCE.newChannel(Constants.modId, new PacketHandler());
 
 
-		EntityRegistry.registerModEntity(EntityPulseMana.class, "Destabilized Mana Pulse", 0, FLORA.instance, 80, 1, true);
+		EntityRegistry.registerModEntity(EntityPulseMana.class, "Destabilized Mana Pulse", 0, FLORA.instance, 224, 1, true);
+
+		EntityRegistry.registerModEntity(EntityPulseSlow.class, "Destabilized Cryotheum Pulse", 1, FLORA.instance, 224, 1, true);
+
+		EntityRegistry.registerModEntity(EntityPulsePyrotheum.class, "Destabilized Pyrotheum Pulse", 2, FLORA.instance, 224, 1, true);
+
+		EntityRegistry.registerModEntity(EntityPulseCoal.class, "Destabilized Coal Pulse", 3, FLORA.instance, 224, 1, true);
+
+		EntityRegistry.registerModEntity(EntityPulseEnder.class, "Destabilized Ender Pulse", 4, FLORA.instance, 224, 1, true);
 	}
 
 	@Override

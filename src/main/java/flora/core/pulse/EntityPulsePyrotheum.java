@@ -2,40 +2,37 @@ package flora.core.pulse;
 
 import flora.core.Constants;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import thermalfoundation.block.TFBlocks;
 
-public class EntityPulseMana extends EntityPulse {
-
-	public EntityPulseMana(World par1World, EntityLivingBase e, double par8, double par10, double par12) {
+public class EntityPulsePyrotheum extends EntityPulse{
+	public EntityPulsePyrotheum(World par1World, EntityLivingBase e, double par8, double par10, double par12) {
 		super(par1World, e, par8, par10, par12);
 	}
 
 	@Override
 	public IIcon getRenderIcon() {
-		return TFBlocks.blockFluidMana.getIcon(0, 0);
-	}
-	public EntityPulseMana(World par1World) {
-		super(par1World);
+		return TFBlocks.blockFluidPyrotheum.getIcon(0, 0);
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/mana.png");
+		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/pyrotheum.png");
+	}
+
+	public EntityPulsePyrotheum(World par1World) {
+		super(par1World);
 	}
 
 
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
 		if(var1.entityHit!=sender&&var1.entityHit!=null && var1.entityHit instanceof EntityLivingBase){
-			((EntityLivingBase) var1.entityHit).curePotionEffects(new ItemStack(Items.milk_bucket));
+			var1.entityHit.setFire(200);
 		}
 		this.setDead();
 	}
-
 }

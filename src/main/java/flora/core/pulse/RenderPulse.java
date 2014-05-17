@@ -3,16 +3,22 @@ package flora.core.pulse;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderPulse extends RenderFireball {
 	public RenderPulse(float par1) {
 		super(par1);
-		size =par1;
+		size=par1;
 	}
 	float size;
+	@Override
+	protected ResourceLocation getEntityTexture(EntityFireball entityPulse) {
+		return ((EntityPulse)entityPulse).getResourceLocation();
+	}
 
 	@Override
 	public void doRenderShadowAndFire(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {}

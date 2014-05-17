@@ -3,8 +3,7 @@ package flora.core.logic;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import flora.core.item.ItemArmorFLORA;
-import flora.core.pulse.EntityPulse;
-import flora.core.pulse.EntityPulseMana;
+import flora.core.pulse.*;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,7 +92,7 @@ public class ArmorEffectsManager{
 			if(fluidInteractionMatrix[5][5]>0){
 				intensity=fluidInteractionMatrix[5][5];
 				if(event.player.worldObj.getTotalWorldTime()%600==0){
-					event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((intensity*rand.nextGaussian())+20);
+					event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(Math.max(4, (intensity*rand.nextGaussian())+20));
 				}
 			}
 
@@ -142,12 +141,72 @@ public class ArmorEffectsManager{
 			//Redstone-Mana
 			if(fluidInteractionMatrix[3][5]>0){
 				intensity=fluidInteractionMatrix[3][5];
-				if(rand.nextInt(50)<intensity){
+				if(rand.nextInt(5000)<intensity){
 					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
 					if(nearbyEntities.size()>1){
 						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
 						if(target!=player){
 							EntityPulse e = new EntityPulseMana(player.worldObj, player, target.posX-player.posX, target.posY-player.posY, target.posZ-player.posZ);
+							player.worldObj.spawnEntityInWorld(e);
+						}
+					}
+				}
+			}
+
+			//Coal-Mana
+			if(fluidInteractionMatrix[0][5]>0){
+				intensity=fluidInteractionMatrix[0][5];
+				if(rand.nextInt(5000)<intensity){
+					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
+					if(nearbyEntities.size()>1){
+						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+						if(target!=player){
+							EntityPulse e = new EntityPulseCoal(player.worldObj, player, target.posX-player.posX, target.posY-player.posY, target.posZ-player.posZ);
+							player.worldObj.spawnEntityInWorld(e);
+						}
+					}
+				}
+			}
+
+			//Redstone-Mana
+			if(fluidInteractionMatrix[1][5]>0){
+				intensity=fluidInteractionMatrix[1][5];
+				if(rand.nextInt(5000)<intensity){
+					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
+					if(nearbyEntities.size()>1){
+						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+						if(target!=player){
+							EntityPulse e = new EntityPulsePyrotheum(player.worldObj, player, target.posX-player.posX, target.posY-player.posY, target.posZ-player.posZ);
+							player.worldObj.spawnEntityInWorld(e);
+						}
+					}
+				}
+			}
+
+			//Redstone-Mana
+			if(fluidInteractionMatrix[2][5]>0){
+				intensity=fluidInteractionMatrix[2][5];
+				if(rand.nextInt(5000)<intensity){
+					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
+					if(nearbyEntities.size()>1){
+						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+						if(target!=player){
+							EntityPulse e = new EntityPulseSlow(player.worldObj, player, target.posX-player.posX, target.posY-player.posY, target.posZ-player.posZ);
+							player.worldObj.spawnEntityInWorld(e);
+						}
+					}
+				}
+			}
+
+			//Redstone-Mana
+			if(fluidInteractionMatrix[4][5]>0){
+				intensity=fluidInteractionMatrix[4][5];
+				if(rand.nextInt(5000)<intensity){
+					List<EntityLivingBase> nearbyEntities=player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.boundingBox.expand(20, 3, 20));
+					if(nearbyEntities.size()>1){
+						EntityLivingBase target=nearbyEntities.get(rand.nextInt(nearbyEntities.size()));
+						if(target!=player){
+							EntityPulse e = new EntityPulseEnder(player.worldObj, player, target.posX-player.posX, target.posY-player.posY, target.posZ-player.posZ);
 							player.worldObj.spawnEntityInWorld(e);
 						}
 					}
