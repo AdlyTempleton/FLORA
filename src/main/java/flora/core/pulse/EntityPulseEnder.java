@@ -1,6 +1,6 @@
 package flora.core.pulse;
 
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -22,7 +22,7 @@ public class EntityPulseEnder extends EntityPulse {
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/ender.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/ender.png");
 	}
 
 	public EntityPulseEnder(World par1World) {

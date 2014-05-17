@@ -1,6 +1,6 @@
 package flora.core.pulse;
 
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ public class EntityPulseMana extends EntityPulse {
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/mana.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/mana.png");
 	}
 
 

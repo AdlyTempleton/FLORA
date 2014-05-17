@@ -22,7 +22,7 @@ public class PacketHandler extends SimpleChannelInboundHandler<FMLProxyPacket> {
 	private static HashMap<String, Long> fireballCooldown=new HashMap<String, Long>();
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket packet) throws Exception {
-		if (packet.channel().equals(Constants.modId)) {
+		if (packet.channel().equals(ConstantsFLORA.modId)) {
 			ByteBuf payload = packet.payload();
 			if (payload.readableBytes() == 4) {
 				int number = payload.readInt();

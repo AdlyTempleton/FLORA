@@ -4,7 +4,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
@@ -35,7 +35,7 @@ public class KeyHandlerEnder{
 				if (keys[i].isPressed()) {
 					ByteBuf data = Unpooled.buffer(4);
 					data.writeInt(i);
-					C17PacketCustomPayload packet = new C17PacketCustomPayload(Constants.modId, data);
+					C17PacketCustomPayload packet = new C17PacketCustomPayload(ConstantsFLORA.modId, data);
 					EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 					player.sendQueue.addToSendQueue(packet);
 				}

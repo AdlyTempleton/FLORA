@@ -1,6 +1,6 @@
 package flora.core.gui;
 
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import flora.core.block.TileInfuser;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -22,14 +22,14 @@ public class GuiInfuser extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(new ResourceLocation(Constants.GUI_INFUSER_TEX));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(ConstantsFLORA.GUI_INFUSER_TEX));
 		this.drawTexturedModalRect(42, 25, 0, ySize, 104, 14);
 		ArrayList<FluidTank> tanks= tileInfuser.getTotalFluidTank();
 		int total=tileInfuser.getTotalFluidAmount();
 		int currentX=44;
 		for(FluidTank tank:tanks){
 			if(tank.getFluid()!=null){
-				this.mc.renderEngine.bindTexture(new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/"+tank.getFluid().getFluid().getName()+".png"));
+				this.mc.renderEngine.bindTexture(new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/"+tank.getFluid().getFluid().getName()+".png"));
 				float size=1F*tank.getFluidAmount();
 				size/=total;
 				size*=100;
@@ -43,7 +43,7 @@ public class GuiInfuser extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(new ResourceLocation(Constants.GUI_INFUSER_TEX));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(ConstantsFLORA.GUI_INFUSER_TEX));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

@@ -1,6 +1,6 @@
 package flora.core.pulse;
 
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
@@ -22,7 +22,7 @@ public class EntityPulseCoal extends EntityPulse{
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/coal.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/coal.png");
 	}
 
 	public EntityPulseCoal(World par1World) {

@@ -1,6 +1,6 @@
 package flora.core;
 
-public class Constants {
+public class ConstantsFLORA {
 
 	public static final String modId="flora";
 

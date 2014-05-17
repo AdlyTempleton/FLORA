@@ -2,8 +2,11 @@ package flora.core.item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import flora.core.CommonProxy;
+import flora.core.ConstantsFLORA;
 import flora.core.logic.EnumArmorQuality;
 import flora.core.logic.EnumArmorType;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
@@ -29,6 +32,12 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 		this.type=type;
 		this.quality=quality;
 	}
+
+	@Override
+	public void registerIcons(IIconRegister par1IconRegister) {
+		this.itemIcon=par1IconRegister.registerIcon(ConstantsFLORA.PREFIX_MOD+"Armor"+quality.name+type.name);
+	}
+
 	public static ItemArmorFLORA[] armors= new ItemArmorFLORA[ 16 ];
 	public EnumArmorQuality quality;
 	public EnumArmorType type;
@@ -116,6 +125,11 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 			list.appendTag(tankCompound);
 		}
 		nbt.setTag(NBT_FLUID_TAG_LIST, list);
+	}
+
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		return ConstantsFLORA.PREFIX_MOD+"textures/armor/"+quality.name+ (slot==2 ? "_1" : "")+".png";
 	}
 
 	public int getTotalFluidAmount(ItemStack item){

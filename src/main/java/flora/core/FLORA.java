@@ -6,13 +6,13 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Constants.modId, name = Constants.modName, version = Constants.modVersion, dependencies = Constants.modDependencies)
+@Mod(modid = ConstantsFLORA.modId, name = ConstantsFLORA.modName, version = ConstantsFLORA.modVersion, dependencies = ConstantsFLORA.modDependencies)
 public class FLORA {
 
-	@Mod.Instance(Constants.modId)
+	@Mod.Instance(ConstantsFLORA.modId)
 	public static FLORA instance;
 
-	@SidedProxy(clientSide = Constants.clientProxy, serverSide = Constants.commonProxy)
+	@SidedProxy(clientSide = ConstantsFLORA.clientProxy, serverSide = ConstantsFLORA.commonProxy)
 	public static CommonProxy proxy;
 
 	@Mod.EventHandler

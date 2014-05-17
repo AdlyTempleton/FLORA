@@ -1,6 +1,6 @@
 package flora.core.pulse;
 
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -20,7 +20,7 @@ public class EntityPulsePyrotheum extends EntityPulse{
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/pyrotheum.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/pyrotheum.png");
 	}
 
 	public EntityPulsePyrotheum(World par1World) {

@@ -1,6 +1,6 @@
 package flora.core.pulse;
 
-import flora.core.Constants;
+import flora.core.ConstantsFLORA;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -23,7 +23,7 @@ public class EntityPulseSlow extends EntityPulse {
 
 	@Override
 	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.PREFIX_MOD+"textures/fluid/cryotheum.png");
+		return new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/cryotheum.png");
 	}
 
 	public EntityPulseSlow(World par1World) {

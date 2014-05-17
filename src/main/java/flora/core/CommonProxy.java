@@ -22,7 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy implements IGuiHandler{
 
-	public static CreativeTab tab=new CreativeTab(Constants.nameCreativeTab);
+	public static CreativeTab tab=new CreativeTab(ConstantsFLORA.nameCreativeTab);
 
 	public void preInit(FMLPreInitializationEvent event) {
 		ItemArmorFLORA.register();
@@ -42,7 +42,7 @@ public class CommonProxy implements IGuiHandler{
 
 		FMLCommonHandler.instance().bus().register(new KeyHandlerEnder());
 
-		NetworkRegistry.INSTANCE.newChannel(Constants.modId, new PacketHandler());
+		NetworkRegistry.INSTANCE.newChannel(ConstantsFLORA.modId, new PacketHandler());
 
 
 		EntityRegistry.registerModEntity(EntityPulseMana.class, "Destabilized Mana Pulse", 0, FLORA.instance, 224, 1, true);
