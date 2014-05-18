@@ -70,7 +70,7 @@ public class ArmorEffectsManager{
 		float[][] fluidInteractionMatrix = new float[7][7];
 		for(int i=0;i<7;i++){
 			for(int j=0;j<7;j++){
-				fluidInteractionMatrix[i][j]=totalFluidCount[i]*totalFluidCount[j];
+				fluidInteractionMatrix[i][j]= 10F* (float)Math.sqrt(totalFluidCount[i]*totalFluidCount[j]);
 			}
 		}
 		return fluidInteractionMatrix;
@@ -80,6 +80,8 @@ public class ArmorEffectsManager{
 		return getEffectMatrix(player.inventory.armorInventory);
 	}
 
+
+	public HashMap<String, Float> modifiedMaxHealthPlayers=new HashMap<String, Float>();
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event){
@@ -102,7 +104,16 @@ public class ArmorEffectsManager{
 			if(fluidInteractionMatrix[5][5]>0){
 				intensity=fluidInteractionMatrix[5][5];
 				if(event.player.worldObj.getTotalWorldTime()%600==0){
-					event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(Math.max(4, (intensity*rand.nextGaussian())+20));
+					if(!modifiedMaxHealthPlayers.containsKey(player.getDisplayName())){
+						modifiedMaxHealthPlayers.put(player.getDisplayName(), player.getMaxHealth());
+					}
+					event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(Math.max(4, ((intensity)*.005*rand.nextGaussian())+20));
+
+				}
+			}else{
+				if(modifiedMaxHealthPlayers.containsKey(player.getDisplayName())){
+					player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(modifiedMaxHealthPlayers.get(player.getDisplayName()));
+					modifiedMaxHealthPlayers.remove(player.getDisplayName());
 				}
 			}
 

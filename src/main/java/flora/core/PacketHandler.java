@@ -38,6 +38,8 @@ public class PacketHandler extends SimpleChannelInboundHandler<FMLProxyPacket> {
 							for(int i=1;i<intensity;i++){
 								if(player.worldObj.checkBlockCollision(player.boundingBox.getOffsetBoundingBox(0, -i, 0))){
 									player.setPositionAndUpdate(player.posX, player.posY-i, player.posZ);
+
+
 									return;
 								}
 
