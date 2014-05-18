@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiInfuser extends GuiContainer {
 	TileInfuser tileInfuser;
@@ -19,7 +20,7 @@ public class GuiInfuser extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(new ResourceLocation(ConstantsFLORA.GUI_INFUSER_TEX));
@@ -27,6 +28,10 @@ public class GuiInfuser extends GuiContainer {
 		ArrayList<FluidTank> tanks= tileInfuser.getTotalFluidTank();
 		int total=tileInfuser.getTotalFluidAmount();
 		int currentX=44;
+
+		List<String> text=new ArrayList<String>();
+		int mouseXTranslated=mouseX-guiLeft;
+		int mouseYTranslated=mouseY-guiTop;
 		for(FluidTank tank:tanks){
 			if(tank.getFluid()!=null){
 				this.mc.renderEngine.bindTexture(new ResourceLocation(ConstantsFLORA.PREFIX_MOD+"textures/fluid/"+tank.getFluid().getFluid().getName()+".png"));
@@ -34,9 +39,18 @@ public class GuiInfuser extends GuiContainer {
 				size/=total;
 				size*=100;
 				drawRectangleXRepeated(currentX, 27, 16, 16, 256, 256, (int)size, 10, 16, 1);
+				System.out.println(mouseX);
+				System.out.println(mouseY);
+
+				if(mouseXTranslated>currentX && mouseXTranslated<(currentX+size) && mouseYTranslated > 27 && mouseYTranslated<38){
+					text.add(EnumColor.DARK_GREEN+tank.getFluid().getFluid().getLocalizedName());
+					text.add(EnumColor.DARK_GREEN + "" + tank.getFluidAmount() + "mB" + EnumColor.WHITE);
+				}
 				currentX+=(int)size;
 			}
 		}
+
+		drawHoveringText(text, mouseXTranslated, mouseYTranslated+30, fontRendererObj);
 
 	}
 
