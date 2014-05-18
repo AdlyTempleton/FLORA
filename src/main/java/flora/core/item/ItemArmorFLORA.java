@@ -3,6 +3,8 @@ package flora.core.item;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flora.core.CommonProxy;
 import flora.core.ConstantsFLORA;
+import flora.core.gui.EnumColor;
+import flora.core.logic.ArmorEffectsManager;
 import flora.core.logic.EnumArmorQuality;
 import flora.core.logic.EnumArmorType;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -59,14 +61,34 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 		}
 	}
 
+	public String[][] descriptions=new String[][]{
+			{"Shoot Fireballs", EnumColor.ORANGE+"Explode burning enemies", "Mining Speed", "Pacify Mobs", "Teleport attacking enemies", "Damaging Pulse", "Ignite enemies"},
+			{EnumColor.ORANGE+"Explode burning enemies", EnumColor.RED+"Increase Fall Damage", EnumColor.RED+"Slowness", "Underwater Breath", "Reduced fall damage", "Igniting pulse", "Protection from lava"},
+			{"Mining Speed", EnumColor.RED+"Slowness", "Underwater breath", EnumColor.RED+"Hunger Loss", "Teleport away when injured", "Slowness pulse", EnumColor.RED+"Damage in cold environments"},
+			{"Pacify Mobs", "Underwater Breath", EnumColor.RED+"Hunger Loss", "Antidote", "Long Jump", "Antidote pulse", "Hunger gain"},
+			{"Teleport attacking enemies", "Reduced fall damage", "Teleport away when injured", "Long Jump", "Blink", "Teleportation pulse", "Fall through ground when sneaking"},
+			{"Damaging Pulse", "Igniting pulse", "Slowness pulse", "Antidote pulse", "Teleportation pulse", "Fluctuating max health", EnumColor.RED+"Self-Combustion"},
+			{"Ignite enemies", "Protection from lava", EnumColor.RED+"Damage in cold environments", "Hunger gain", "Fall through ground when sneaking", EnumColor.RED+"Self-Combustion", "Night Vision"}
+	};
+
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		if(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
 			for(FluidTank tank:getFluidTanks(par1ItemStack)){
-				par3List.add(tank.getFluid().getFluid().getName()+" : "+tank.getFluidAmount()+"mb");
+				par3List.add(EnumColor.DARK_AQUA+tank.getFluid().getFluid().getLocalizedName()+" : "+tank.getFluidAmount()+"mb");
+			}
+			par3List.add(EnumColor.DARK_BLUE+"Capacity: "+quality.storage);
+			par3List.add(EnumColor.PURPLE+"Active Effects:");
+			float[][] effectMatrix= ArmorEffectsManager.getEffectMatrix(par2EntityPlayer);
+			for(int i=0;i<7;i++){
+				for(int j=0;j<=i;j++){
+					if(effectMatrix[i][j]>0){
+						par3List.add(EnumColor.DARK_GREEN+descriptions[i][j]);
+					}
+				}
 			}
 		}else{
-			par3List.add("Sneak to view loaded fluids");
+			par3List.add("Sneak to view information");
 		}
 	}
 
