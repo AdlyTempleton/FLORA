@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
@@ -79,7 +80,12 @@ public class ItemArmorFLORA extends ItemArmor implements ISpecialArmor{
 			}
 			par3List.add(EnumColor.DARK_BLUE+"Capacity: "+quality.storage);
 			par3List.add(EnumColor.PURPLE+"Active Effects:");
-			float[][] effectMatrix= ArmorEffectsManager.getEffectMatrix(par2EntityPlayer);
+			float[][] effectMatrix;
+			if(Arrays.asList(par2EntityPlayer.inventory.armorInventory).contains(par1ItemStack)){
+				effectMatrix= ArmorEffectsManager.getEffectMatrix(par2EntityPlayer);
+			}else{
+				effectMatrix=ArmorEffectsManager.getEffectMatrix(new ItemStack[]{ par1ItemStack });
+			}
 			for(int i=0;i<7;i++){
 				for(int j=0;j<=i;j++){
 					if(effectMatrix[i][j]>0){

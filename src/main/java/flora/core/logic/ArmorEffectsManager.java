@@ -46,7 +46,7 @@ public class ArmorEffectsManager{
 		fluidIntegerHashMap.put(TFFluids.fluidGlowstone, 6);
 	}
 
-	public static float[][] getEffectMatrix(EntityPlayer player){
+	public static float[][] getEffectMatrix(ItemStack[] armor){
 		/*
 		* Returns a 7x7 matrix of floats corresponding to the intensity of different effects on a player
 		* The value at [i][j] corresponds to the strength of the interaction between liquids 'i' and 'j'
@@ -54,10 +54,11 @@ public class ArmorEffectsManager{
 		* Fluid-Integer mapplings are given by fluidIntegerHashMap
 		*/
 
+
 		//1-Dimensional array of floats representing total amounts, in buckets, of a fluid on a player
 		float[] totalFluidCount = new float[7];
-		for(int i=0;i<4;i++){
-			ItemStack stack=player.inventory.armorInventory[i];
+		for(int i=0;i<armor.length;i++){
+			ItemStack stack=armor[i];
 			if(stack!=null && stack.getItem() instanceof ItemArmorFLORA){
 				for(FluidTank tank:((ItemArmorFLORA) stack.getItem()).getFluidTanks(stack)){
 					totalFluidCount[fluidIntegerHashMap.get(tank.getFluid().getFluid())]+=(tank.getFluidAmount()/1000F);
@@ -73,6 +74,10 @@ public class ArmorEffectsManager{
 			}
 		}
 		return fluidInteractionMatrix;
+	}
+
+	public static float[][] getEffectMatrix(EntityPlayer player){
+		return getEffectMatrix(player.inventory.armorInventory);
 	}
 
 
