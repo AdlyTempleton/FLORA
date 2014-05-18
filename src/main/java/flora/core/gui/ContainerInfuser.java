@@ -21,6 +21,8 @@ public class ContainerInfuser extends Container {
 		addSlotToContainer(new SlotFloraArmor(tileEntity, 1, 63, 61, 1));
 		addSlotToContainer(new SlotFloraArmor(tileEntity, 2, 83, 61, 2));
 		addSlotToContainer(new SlotFloraArmor(tileEntity, 3, 103, 61, 3));
+
+		addSlotToContainer(new SlotBucket(tileEntity, 4, 11, 26));
 		bindPlayerInventory(inventoryPlayer);
 	}
 
@@ -44,11 +46,20 @@ public class ContainerInfuser extends Container {
 		if (slotObject != null && slotObject.getHasStack()) {
 			ItemStack stackInSlot = slotObject.getStack();
 			stack = stackInSlot.copy();
-			if (slot < 4) {
+			if (slot < 5) {
 				if (!this.mergeItemStack(stackInSlot, 0, 31, true)) {
 					return null;
 				}
 			}
+
+			if(TileInfuser.getFluidFromItem(stackInSlot)!=null){
+				Slot targetSlot= (Slot) inventorySlots.get(4);
+				if(targetSlot.isItemValid(stackInSlot) && !targetSlot.getHasStack()){
+					targetSlot.putStack(stackInSlot);
+					slotObject.putStack(null);
+				}
+			}
+
 			if (stackInSlot.getItem() instanceof ItemArmorFLORA && stackInSlot.stackSize==1){
 				int i=((ItemArmorFLORA) stackInSlot.getItem()).type.ordinal();
 				Slot targetSlot= (Slot) inventorySlots.get(i);

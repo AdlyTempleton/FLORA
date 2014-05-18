@@ -20,7 +20,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Random;
@@ -120,35 +119,10 @@ public class BlockInfuser extends Block {
 			return false;
 		}
 		if(player.inventory.getCurrentItem() !=null && (player.inventory.getCurrentItem().getItem() instanceof ItemBucket)){
-			FluidStack fluid=null;
-			String fluidName=null;
-			String stackName=player.inventory.getCurrentItem().getUnlocalizedName();
-			if(stackName.contains("bucketRedstone")){
-				fluidName="redstone";
-			}
-			if(stackName.contains("bucketGlowstone")){
-				fluidName="glowstone";
-			}
-			if(stackName.contains("bucketEnder")){
-				fluidName="ender";
-			}
-			if(stackName.contains("bucketPyrotheum")){
-				fluidName="pyrotheum";
-			}
-			if(stackName.contains("bucketCryotheum")){
-				fluidName="cryotheum";
-			}
-			if(stackName.contains("bucketCoal")){
-				fluidName="coal";
-			}
-			if(stackName.contains("bucketMana")){
-				fluidName="mana";
-			}
-			if (fluidName==null){
+			FluidStack fluidStack=TileInfuser.getFluidFromItem(player.inventory.getCurrentItem());
+			if(fluidStack==null){
 				return false;
 			}
-
-			FluidStack fluidStack=new FluidStack(FluidRegistry.getFluid(fluidName), 1000);
 			if(((TileInfuser)tileEntity).fillArmorWithFluid(fluidStack, true)){
 				player.getHeldItem().stackSize--;
 				if(player.getHeldItem().stackSize==0){

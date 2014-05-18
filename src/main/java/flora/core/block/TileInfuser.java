@@ -1,7 +1,9 @@
 package flora.core.block;
 
+import cofh.item.ItemBucket;
 import flora.core.item.ItemArmorFLORA;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +19,7 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 		super();
 	}
 
-	private ItemStack[] inv = new ItemStack[4];
+	private ItemStack[] inv = new ItemStack[5];
 
 	@Override
 	public int getSizeInventory() {
@@ -27,6 +29,21 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 	@Override
 	public ItemStack getStackInSlot(int var1) {
 		return inv[var1];
+	}
+
+	@Override
+	public void updateEntity() {
+		if(getStackInSlot(4)!=null && getFluidFromItem(getStackInSlot(4))!=null){
+			FluidStack fluidStack=getFluidFromItem(getStackInSlot(4));
+			if(fillArmorWithFluid(fluidStack, true)){
+				if(getStackInSlot(4).getItem() instanceof ItemBucket){
+					setInventorySlotContents(4, new ItemStack(Items.bucket));
+				}
+				if(getStackInSlot(4).getItem() instanceof IFluidContainerItem){
+					((IFluidContainerItem) getStackInSlot(4).getItem()).drain( getStackInSlot(4),((IFluidContainerItem) getStackInSlot(4).getItem()).getFluid( getStackInSlot(4)).amount, true);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -100,7 +117,7 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		return var2.getItem() instanceof ItemArmorFLORA && ((ItemArmorFLORA) var2.getItem()).type.ordinal() == var1;
+		return var1==4 ? getFluidFromItem(var2)!=null :var2.getItem() instanceof ItemArmorFLORA && ((ItemArmorFLORA) var2.getItem()).type.ordinal() == var1;
 	}
 
 	public boolean fillArmorWithFluid(FluidStack fluid, boolean doFill) {
@@ -232,5 +249,42 @@ public class TileInfuser extends TileEntity implements IInventory, IFluidHandler
 		}
 
 		nbt.setTag("Items", tagList);
+	}
+
+	public static FluidStack getFluidFromItem(ItemStack currentItem) {
+
+		if(currentItem.getItem() instanceof IFluidContainerItem){
+			return ((IFluidContainerItem) currentItem.getItem()).getFluid(currentItem);
+		}
+
+		FluidStack fluid=null;
+		String fluidName=null;
+		String stackName=currentItem.getUnlocalizedName();
+		if(stackName.contains("bucketRedstone")){
+			fluidName="redstone";
+		}
+		if(stackName.contains("bucketGlowstone")){
+			fluidName="glowstone";
+		}
+		if(stackName.contains("bucketEnder")){
+			fluidName="ender";
+		}
+		if(stackName.contains("bucketPyrotheum")){
+			fluidName="pyrotheum";
+		}
+		if(stackName.contains("bucketCryotheum")){
+			fluidName="cryotheum";
+		}
+		if(stackName.contains("bucketCoal")){
+			fluidName="coal";
+		}
+		if(stackName.contains("bucketMana")){
+			fluidName="mana";
+		}
+		if(fluidName==null){
+			return null;
+		}
+
+		return new FluidStack(FluidRegistry.getFluid(fluidName), 1000);
 	}
 }

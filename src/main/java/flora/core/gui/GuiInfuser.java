@@ -39,9 +39,6 @@ public class GuiInfuser extends GuiContainer {
 				size/=total;
 				size*=100;
 				drawRectangleXRepeated(currentX, 27, 16, 16, 256, 256, (int)size, 10, 16, 1);
-				System.out.println(mouseX);
-				System.out.println(mouseY);
-
 				if(mouseXTranslated>currentX && mouseXTranslated<(currentX+size) && mouseYTranslated > 27 && mouseYTranslated<38){
 					text.add(EnumColor.DARK_GREEN+tank.getFluid().getFluid().getLocalizedName());
 					text.add(EnumColor.DARK_GREEN + "" + tank.getFluidAmount() + "mB" + EnumColor.WHITE);
