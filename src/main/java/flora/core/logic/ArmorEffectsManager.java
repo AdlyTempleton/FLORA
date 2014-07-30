@@ -174,7 +174,7 @@ public class ArmorEffectsManager{
 				}
 			}
 
-			//Coal-Mana
+			//Coal-Redstone
 			if(fluidInteractionMatrix[0][5]>0){
 				intensity=fluidInteractionMatrix[0][5];
 				if(rand.nextInt(5000)<intensity){
