@@ -47,8 +47,8 @@ public class ContainerInfuser extends Container {
 			ItemStack stackInSlot = slotObject.getStack();
 			stack = stackInSlot.copy();
 			if (slot < 5) {
-				if (!this.mergeItemStack(stackInSlot, 0, 31, true)) {
-					return null;
+                if (!this.mergeItemStack(stackInSlot, 6, 40, true)) {
+                    return null;
 				}
 			}
 
@@ -78,8 +78,8 @@ public class ContainerInfuser extends Container {
 			if (stackInSlot.stackSize == stack.stackSize) {
 				return null;
 			}
-			slotObject.onPickupFromSlot(player, stackInSlot);
-		}
+            //slotObject.onPickupFromSlot(player, stackInSlot);
+        }
 		return stack;
 	}
 
