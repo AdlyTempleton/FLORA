@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import redstonearsenal.item.RAItems;
+import thermalexpansion.block.TEBlocks;
 import thermalexpansion.item.TEItems;
 
 public class CommonProxy implements IGuiHandler{
@@ -61,7 +62,8 @@ public class CommonProxy implements IGuiHandler{
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemArmorFLORA.armors[14]), "AAA", "ACA", "B B", 'A', "blockEnderium", 'B', TEItems.capacitorResonant, 'C', new ItemStack(ItemArmorFLORA.armors[10])));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemArmorFLORA.armors[15]), "ACA", "B B", "   ", 'A', "blockEnderium", 'B', TEItems.capacitorResonant, 'C', new ItemStack(ItemArmorFLORA.armors[11])));
 
-
+        //Infuser
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockInfuser.instance), "DDD", "BAB", "DDD", 'A', TEItems.pneumaticServo, 'B', new ItemStack(TEBlocks.blockMachine, 1, 5), 'D', "ingotLead"));
     }
 
 	public void init(FMLInitializationEvent event) {
