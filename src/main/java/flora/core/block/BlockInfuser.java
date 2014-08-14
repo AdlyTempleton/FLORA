@@ -1,6 +1,6 @@
 package flora.core.block;
 
-import cofh.item.ItemBucket;
+import cofh.core.item.ItemBucket;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flora.core.CommonProxy;
 import flora.core.ConstantsFLORA;
@@ -25,34 +25,17 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.Random;
 
 public class BlockInfuser extends Block {
-	public BlockInfuser() {
+    public static final String blockName = "FLORAInfuser";
+    public static BlockInfuser instance;
+    private IIcon iconSide;
+    private IIcon iconBottom;
+    private IIcon iconFace;
+    private IIcon iconTop;
+
+    public BlockInfuser() {
 		super(Material.piston);
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
-		super.onBlockPlacedBy(world, x, y, z, entityLivingBase, itemStack);
-		int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-		if (l == 0){
-			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-		}
-
-		if (l == 1){
-			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-		}
-
-		if (l == 2){
-			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-		}
-
-		if (l == 3){
-			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-		}
-	}
-
-	public static BlockInfuser instance;
-	public static final String blockName="FLORAInfuser";
 	public static void register(){
 		instance=new BlockInfuser();
 		instance.setBlockName(blockName);
@@ -61,10 +44,27 @@ public class BlockInfuser extends Block {
 		GameRegistry.registerTileEntity(TileInfuser.class, blockName);
 	}
 
-	private IIcon iconSide;
-	private IIcon iconBottom;
-	private IIcon iconFace;
-	private IIcon iconTop;
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
+        super.onBlockPlacedBy(world, x, y, z, entityLivingBase, itemStack);
+        int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        if (l == 0) {
+            world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+        }
+
+        if (l == 1) {
+            world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+        }
+
+        if (l == 2) {
+            world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+        }
+
+        if (l == 3) {
+            world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+        }
+    }
 
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister) {
