@@ -14,7 +14,6 @@ import flora.core.gui.ContainerInfuser;
 import flora.core.gui.GuiInfuser;
 import flora.core.item.ItemArmorFLORA;
 import flora.core.logic.ArmorEffectsManager;
-import flora.core.logic.KeyHandlerEnder;
 import flora.core.pulse.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,9 +71,8 @@ public class CommonProxy implements IGuiHandler{
 		FMLCommonHandler.instance().bus().register(effectsManager);
 		MinecraftForge.EVENT_BUS.register(effectsManager);
 
-		FMLCommonHandler.instance().bus().register(new KeyHandlerEnder());
 
-		NetworkRegistry.INSTANCE.newChannel(ConstantsFLORA.modId, new PacketHandler());
+        NetworkRegistry.INSTANCE.newChannel(ConstantsFLORA.modId, new PacketHandler());
 
 
 		EntityRegistry.registerModEntity(EntityPulseMana.class, "Destabilized Mana Pulse", 0, FLORA.instance, 224, 1, true);
